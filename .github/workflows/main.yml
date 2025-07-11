@@ -1,0 +1,17 @@
+name: 'Upstream Sync'
+schedule:
+  - cron: '0 0 * * *' # 每天UTC 0:00自动运行，可根据需要更改cron表达式
+  - cron: '0 */4 * * *' # 每隔4小时运行一次
+workflow_dispatch: # 允许手动触发
+jobs:
+  sync_latest_from_upstream:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Sync Fork
+      uses: repo-sync/github-sync@v2
+      with:
+        source_repo: 'crossxx-labs/free-proxy' # 替换为原仓库用户名和仓库名
+        source_branch: main # 替换为原仓库分支名
+        target_branch: main # 替换为自己fork仓库的分支名
+        github_token: ${{ secrets.GITHUB_TOKEN }}
